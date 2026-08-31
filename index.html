@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menuju Lokasi Pernikahan</title>
+    <script>
+        window.onload = function() {
+            // --- ATUR TANGGAL PERNIKAHAN ANDA DI SINI (Format: TAHUN-BULAN-TANGGAL) ---
+            const tanggalPernikahan = new Date("2026-09-15T23:59:59"); 
+            
+            // Mengambil waktu saat ini di HP tamu
+            const waktuSekarang = new Date();
+
+            if (waktuSekarang > tanggalPernikahan) {
+                // Tampilan jika sudah lewat H+1
+                document.body.innerHTML = `
+                    <div style="text-align: center; margin-top: 50px; font-family: sans-serif; padding: 20px;">
+                        <h2>Akses Lokasi Ditutup</h2>
+                        <p>Mohon maaf, demi privasi keluarga besar, akses menuju peta lokasi pernikahan telah dinonaktifkan karena acara telah selesai.</p>
+                        <p>Terima kasih atas pengertiannya.</p>
+                    </div>
+                `;
+            } else {
+                // --- PASTE LINK GOOGLE MAPS RUMAH ANDA DI BAWAH INI ---
+                window.location.href = "https://www.google.com/maps/place/SMPIT+Insan+Kamil/@-6.2743564,107.1827008,17z/data=!4m10!1m2!2m1!1ssmpit+insan+kami;!3m6!1s0x2e698543dfca4e1b:0xc1b3d89b23220e17!8m2!3d-6.2747201!4d107.1848434!15sChJzbXBpdCBpbnNhbiBrYW1pbDuSAQ1taWRkbGVfc2Nob29s4AEA!16s%2Fg%2F11ssjcdr2x?entry=ttu&g_ep=EgoyMDI2MDgyNi4wIKXMDSoASAFQAw%3D%3D";
+            }
+        };
+    </script>
+</head>
+<body style="font-family: sans-serif; text-align: center; margin-top: 100px;">
+    <h3>Memuat Peta Lokasi...</h3>
+    <p>Anda akan segera dialihkan ke Google Maps.</p>
+</body>
+</html>
