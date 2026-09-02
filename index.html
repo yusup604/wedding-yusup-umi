@@ -34,59 +34,64 @@
             transition: opacity 1.5s ease-in-out, visibility 1.5s ease-in-out;
         }
 
-        /* 
-           FRAME GAMBAR RESPONSIF 
-           Otomatis menyesuaikan ukuran layar HP maupun Laptop
-        */
+        /* FRAME GAMBAR RESPONSIF */
         .image-wrapper {
             position: relative;
             width: 85vw; /* Mengikuti 85% lebar layar bawaan perangkat */
-            max-width: 450px; /* Batas maksimal lebar di Laptop agar tidak terlalu besar */
-            aspect-ratio: 3 / 4; /* Rasio standar foto potret (tegak). Bisa diubah ke 1/1 (kotak) jika perlu */
+            max-width: 450px; /* Batas maksimal lebar di Laptop */
+            aspect-ratio: 3 / 4; /* Rasio standar foto potret */
             overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
             border-radius: 12px;
-            
-            /* Membantu akselerasi rendering animasi */
-            transform: translate3d(0,0,0);
         }
 
-        /* Pengaturan File Gambar di Dalam Frame */
+        /* Pengaturan Gambar Utama (Tetap Diam & Tidak Geser Kiri-Kanan) */
         .image-wrapper img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Memastikan foto memenuhi frame tanpa gepeng/distorsi */
+            object-fit: cover;
             display: block;
-            
-            /* Memicu akselerasi hardware browser agar animasi melambai smooth */
-            transform: translate3d(0, 0, 0);
-            backface-visibility: hidden;
-            perspective: 1000px;
-
-            /* Menerapkan animasi lambaian bendera berkibar */
-            animation: waveEffect 4s ease-in-out infinite alternate;
         }
 
         /* 
-           KEYFRAMES ANIMASI GELOMBANG BERKIBAR (Waving Cloth)
-           Dibuat lebih lembut (4 detik) agar efek gelombang kain terasa natural
+           LAPISAN EFEK KAIN BERKIBAR (Waving Overlay)
+           Membuat efek bayangan gelombang dan pencahayaan angin di atas foto
         */
-        @keyframes waveEffect {
+        .image-wrapper::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -200%; /* Memperpanjang area gelombang untuk animasi berjalan */
+            width: 400%;
+            height: 100%;
+            
+            /* Membuat pola linear gradient sebagai ilusi lipatan kain (gelap terang) */
+            background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.2) 20%,
+                rgba(0, 0, 0, 0.15) 40%,
+                rgba(255, 255, 255, 0.25) 60%,
+                rgba(0, 0, 0, 0.12) 80%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            
+            /* Ukuran gelombang diatur agar berulang halus seperti kain */
+            background-size: 50% 100%;
+            
+            /* Jalankan animasi bayangan kain tertiup angin */
+            animation: windBlow 4s linear infinite;
+            mix-blend-mode: overlay; /* Menyatu secara natural dengan foto di bawahnya */
+            pointer-events: none;
+        }
+
+        /* ANIMASI GERAKAN GELOMBANG ANGIN */
+        @keyframes windBlow {
             0% {
-                transform: scale(1) skewX(0deg) skewY(0deg);
-                filter: brightness(1) contrast(1);
-            }
-            33% {
-                transform: scale(1.02) skewX(1.5deg) skewY(0.5deg);
-                filter: brightness(1.02) contrast(0.98);
-            }
-            66% {
-                transform: scale(1.01) skewX(-1.5deg) skewY(-0.5deg);
-                filter: brightness(0.97) contrast(1.02);
+                transform: translateX(0%);
             }
             100% {
-                transform: scale(1.03) skewX(1deg) skewY(0deg);
-                filter: brightness(1.03) contrast(1);
+                transform: translateX(50%); /* Menggeser bayangan secara horizontal menghasilkan efek kain melambai */
             }
         }
 
@@ -112,7 +117,7 @@
             const waktuSekarang = new Date();
 
             if (waktuSekarang > tanggalPernikahan) {
-                // Tampilan jika sudah lewat H+1
+                // Tampilan jika sudah lewat H+1 (Logika pembatasan tetap utuh)
                 document.body.innerHTML = `
                     <div style="text-align: center; margin-top: 50px; font-family: sans-serif; padding: 20px; width: 100%;">
                         <h2>Akses Lokasi Ditutup</h2>
@@ -121,7 +126,7 @@
                     </div>
                 `;
             } else {
-                // Tampilkan gambar selama 3 detik
+                // Tampilkan gambar dengan efek kain selama 3 detik
                 setTimeout(function() {
                     const intro = document.getElementById('intro');
                     if (intro) {
@@ -132,7 +137,7 @@
                     // Pindah ke Google Maps tepat setelah efek menghilang selesai
                     setTimeout(function() {
                         // --- PASTE LINK GOOGLE MAPS RUMAH ANDA DI BAWAH INI ---
-                        window.location.href = "https://www.google.com/maps/place/6%C2%B016'47.3%22S+107%C2%B003'16.8%22E/@-6.2798887,107.0545201,21z/data=!4m4!3m3!8m2!3d-6.2798056!4d107.0546667?entry=ttu&g_ep=EgoyMDI2MDgzMC4wIKXMDSoASAFQAw%3D%3D";
+                        window.location.href = "https://google.com";
                     }, 1500);
 
                 }, 3000); 
@@ -142,10 +147,10 @@
 </head>
 <body>
 
-    <!-- Layar Intro Gambar Pengantin Responsif -->
+    <!-- Layar Intro Gambar Pengantin dengan Efek Bayangan Kain Berkibar -->
     <div id="intro" class="intro-container">
         <div class="image-wrapper">
-            <img src="pengantin.jpeg" alt="Foto Pengantin">
+            <img src="pengantin.jpg" alt="Foto Pengantin">
         </div>
     </div>
 
