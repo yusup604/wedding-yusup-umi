@@ -4,33 +4,156 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menuju Lokasi Pernikahan</title>
+    <style>
+        /* Mengatur dasar halaman agar bersih dan terpusat */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Kontainer Utama untuk Layar Intro */
+        .intro-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            /* Transisi menghilang perlahan (fade out) */
+            transition: opacity 1.5s ease-in-out, visibility 1.5s ease-in-out;
+        }
+
+        /* 
+           FRAME GAMBAR RESPONSIF 
+           Otomatis menyesuaikan ukuran layar HP maupun Laptop
+        */
+        .image-wrapper {
+            position: relative;
+            width: 85vw; /* Mengikuti 85% lebar layar bawaan perangkat */
+            max-width: 450px; /* Batas maksimal lebar di Laptop agar tidak terlalu besar */
+            aspect-ratio: 3 / 4; /* Rasio standar foto potret (tegak). Bisa diubah ke 1/1 (kotak) jika perlu */
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            border-radius: 12px;
+            
+            /* Membantu akselerasi rendering animasi */
+            transform: translate3d(0,0,0);
+        }
+
+        /* Pengaturan File Gambar di Dalam Frame */
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Memastikan foto memenuhi frame tanpa gepeng/distorsi */
+            display: block;
+            
+            /* Memicu akselerasi hardware browser agar animasi melambai smooth */
+            transform: translate3d(0, 0, 0);
+            backface-visibility: hidden;
+            perspective: 1000px;
+
+            /* Menerapkan animasi lambaian bendera berkibar */
+            animation: waveEffect 4s ease-in-out infinite alternate;
+        }
+
+        /* 
+           KEYFRAMES ANIMASI GELOMBANG BERKIBAR (Waving Cloth)
+           Dibuat lebih lembut (4 detik) agar efek gelombang kain terasa natural
+        */
+        @keyframes waveEffect {
+            0% {
+                transform: scale(1) skewX(0deg) skewY(0deg);
+                filter: brightness(1) contrast(1);
+            }
+            33% {
+                transform: scale(1.02) skewX(1.5deg) skewY(0.5deg);
+                filter: brightness(1.02) contrast(0.98);
+            }
+            66% {
+                transform: scale(1.01) skewX(-1.5deg) skewY(-0.5deg);
+                filter: brightness(0.97) contrast(1.02);
+            }
+            100% {
+                transform: scale(1.03) skewX(1deg) skewY(0deg);
+                filter: brightness(1.03) contrast(1);
+            }
+        }
+
+        /* Kelas CSS untuk memicu hilangnya intro secara perlahan */
+        .intro-hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Desain teks pemuatan di latar belakang */
+        .loading-text {
+            text-align: center;
+            color: #333333;
+            padding: 20px;
+        }
+    </style>
     <script>
         window.onload = function() {
             // --- ATUR TANGGAL PERNIKAHAN ANDA DI SINI (Format: TAHUN-BULAN-TANGGAL) ---
             const tanggalPernikahan = new Date("2026-12-13T23:59:59");
-
             
-            // Mengambil waktu saat ini di HP tamu
             const waktuSekarang = new Date();
 
             if (waktuSekarang > tanggalPernikahan) {
                 // Tampilan jika sudah lewat H+1
                 document.body.innerHTML = `
-                    <div style="text-align: center; margin-top: 50px; font-family: sans-serif; padding: 20px;">
+                    <div style="text-align: center; margin-top: 50px; font-family: sans-serif; padding: 20px; width: 100%;">
                         <h2>Akses Lokasi Ditutup</h2>
                         <p>Mohon maaf, demi privasi keluarga besar, akses menuju peta lokasi pernikahan telah dinonaktifkan karena acara telah selesai.</p>
                         <p>Terima kasih atas pengertiannya.</p>
                     </div>
                 `;
             } else {
-                // --- PASTE LINK GOOGLE MAPS RUMAH ANDA DI BAWAH INI ---
-                window.location.href = "https://www.google.com/maps/place/6%C2%B016'47.3%22S+107%C2%B003'16.8%22E/@-6.2798887,107.0545201,21z/data=!4m4!3m3!8m2!3d-6.2798109!4d107.0546726?entry=ttu&g_ep=EgoyMDI2MDgzMC4wIKXMDSoASAFQAw%3D%3D";
+                // Tampilkan gambar selama 3 detik
+                setTimeout(function() {
+                    const intro = document.getElementById('intro');
+                    if (intro) {
+                        // Jalankan efek menghilang (fade out) selama 1.5 detik
+                        intro.classList.add('intro-hidden');
+                    }
+
+                    // Pindah ke Google Maps tepat setelah efek menghilang selesai
+                    setTimeout(function() {
+                        // --- PASTE LINK GOOGLE MAPS RUMAH ANDA DI BAWAH INI ---
+                        window.location.href = "https://google.com";
+                    }, 1500);
+
+                }, 3000); 
             }
         };
     </script>
 </head>
-<body style="font-family: sans-serif; text-align: center; margin-top: 100px;">
-    <h3>Memuat Peta Lokasi...</h3>
-    <p>Anda akan segera dialihkan ke Google Maps.</p>
+<body>
+
+    <!-- Layar Intro Gambar Pengantin Responsif -->
+    <div id="intro" class="intro-container">
+        <div class="image-wrapper">
+            <img src="pengantin.jpg" alt="Foto Pengantin">
+        </div>
+    </div>
+
+    <!-- Halaman utama yang berada di latar belakang -->
+    <div class="loading-text">
+        <h3>Memuat Peta Lokasi...</h3>
+        <p>Anda akan segera dialihkan ke Google Maps.</p>
+    </div>
+
 </body>
 </html>
