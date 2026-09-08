@@ -3,161 +3,235 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menuju Lokasi Pernikahan</title>
+    <title>Menuju Lokasi Pernikahan - Yusup & Umi</title>
+    <!-- Kombinasi Font Premium untuk Kesan Paling Anggun -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
+    
     <style>
-        /* Mengatur dasar halaman agar bersih dan terpusat */
+        /* Dasar halaman bersih dengan warna background off-white lembut */
         body {
             margin: 0;
             padding: 0;
-            background-color: #ffffff;
-            font-family: sans-serif;
+            background-color: #f7f9fa; 
+            font-family: 'Montserrat', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             overflow: hidden;
+            color: #4a5568;
         }
 
-        /* Kontainer Utama untuk Layar Intro */
+        /* Kontainer Utama Layar Intro */
         .intro-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #ffffff;
+            background-color: #f7f9fa;
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            /* Transisi menghilang perlahan (fade out) */
-            transition: opacity 1.5s ease-in-out, visibility 1.5s ease-in-out;
+            transition: opacity 1.2s ease-in-out, visibility 1.2s ease-in-out;
         }
 
-        /* FRAME GAMBAR RESPONSIF */
+        /* CARD FRAME UTAMA */
+        .wedding-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 16px;
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        /* FRAME GAMBAR LANDSCAPE RESPONSIVITAS TINGGI */
         .image-wrapper {
             position: relative;
-            width: 85vw; /* Mengikuti 85% lebar layar bawaan perangkat */
-            max-width: 450px; /* Batas maksimal lebar di Laptop */
-            aspect-ratio: 3 / 4; /* Rasio standar foto potret */
+            width: 90vw; 
+            max-width: 500px; 
+            aspect-ratio: 16 / 9; 
             overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(142, 164, 179, 0.25); 
+            border-radius: 16px;
+            border: 1px solid rgba(142, 164, 179, 0.2);
+            background-color: #ffffff;
         }
 
-        /* Pengaturan Gambar Utama (Tetap Diam & Tidak Geser Kiri-Kanan) */
+        /* Pengaturan Gambar Utama */
         .image-wrapper img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain; 
             display: block;
         }
 
-        /* 
-           LAPISAN EFEK KAIN BERKIBAR (Waving Overlay)
-           Membuat efek bayangan gelombang dan pencahayaan angin di atas foto
-        */
+        /* LAPISAN EFEK KAIN BERKIBAR (Waving Overlay) */
         .image-wrapper::after {
             content: "";
             position: absolute;
             top: 0;
-            left: -200%; /* Memperpanjang area gelombang untuk animasi berjalan */
+            left: -200%;
             width: 400%;
             height: 100%;
-            
-            /* Membuat pola linear gradient sebagai ilusi lipatan kain (gelap terang) */
             background: linear-gradient(
                 90deg,
                 rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0.2) 20%,
-                rgba(0, 0, 0, 0.15) 40%,
-                rgba(255, 255, 255, 0.25) 60%,
-                rgba(0, 0, 0, 0.12) 80%,
+                rgba(255, 255, 255, 0.25) 25%,
+                rgba(142, 164, 179, 0.1) 50%,
+                rgba(255, 255, 255, 0.3) 75%,
                 rgba(255, 255, 255, 0) 100%
             );
-            
-            /* Ukuran gelombang diatur agar berulang halus seperti kain */
             background-size: 50% 100%;
-            
-            /* Jalankan animasi bayangan kain tertiup angin */
-            animation: windBlow 4s linear infinite;
-            mix-blend-mode: overlay; /* Menyatu secara natural dengan foto di bawahnya */
+            animation: windBlow 5s linear infinite;
+            mix-blend-mode: overlay;
             pointer-events: none;
         }
 
-        /* ANIMASI GERAKAN GELOMBANG ANGIN */
         @keyframes windBlow {
-            0% {
-                transform: translateX(0%);
-            }
-            100% {
-                transform: translateX(50%); /* Menggeser bayangan secara horizontal menghasilkan efek kain melambai */
-            }
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(50%); }
         }
 
-        /* Kelas CSS untuk memicu hilangnya intro secara perlahan */
+        /* Efek transisi menghilang */
         .intro-hidden {
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
         }
 
-        /* Desain teks pemuatan di latar belakang */
-        .loading-text {
+        /* HALAMAN TRANSISI TIPOGRAFI PREMIUM */
+        .main-content {
             text-align: center;
-            color: #333333;
-            padding: 20px;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            padding: 30px;
+            box-sizing: border-box;
+            width: 100%;
+            max-width: 600px;
+        }
+        
+        .main-content.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Spinner minimalis halus */
+        .loading-spinner {
+            border: 2px solid rgba(142, 164, 179, 0.1);
+            border-top: 2px solid #7a92a3;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1.4s linear infinite;
+            margin: 0 auto 30px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Desain Teks Puitis Dan Anggun */
+        .phrase-main {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem;
+            font-weight: 300;
+            font-style: italic;
+            color: #2c3e50;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .phrase-highlight {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.4rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            color: #b89774; /* Warna emas champagne lembut */
+            margin: 5px 0 15px 0;
+            display: block;
+        }
+
+        /* Garis Pembatas Estetik */
+        .luxury-divider {
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(184,151,116,0) 0%, rgba(184,151,116,0.6) 50%, rgba(184,151,116,0) 100%);
+            margin: 20px auto;
+        }
+
+        .phrase-names {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            color: #7a92a3; /* Dusty Blue senada ornamen bingkai */
+            margin: 0;
         }
     </style>
+    
     <script>
         window.onload = function() {
-            // --- ATUR TANGGAL PERNIKAHAN ANDA DI SINI (Format: TAHUN-BULAN-TANGGAL) ---
-            const tanggalPernikahan = new Date("2026-12-13T23:59:59");
+            // URL Google Maps tujuan
+            const urlMaps = "https://www.google.com/maps/place/6%C2%B016'47.3%22S+107%C2%B003'17.1%22E/@-6.2799391,107.0543412,20.03z/data=!4m4!3m3!8m2!3d-6.279792!4d107.054743?entry=ttu&g_ep=EgoyMDI2MDgzMC4wIKXMDSoASAFQAw%3D%3D";
             
+            // Batas tanggal penutupan akses lokasi (Format: TAHUN-BULAN-TANGGAL)
+            const tanggalPernikahan = new Date("2026-12-13T23:59:59");
             const waktuSekarang = new Date();
 
             if (waktuSekarang > tanggalPernikahan) {
-                // Tampilan jika sudah lewat H+1 (Logika pembatasan tetap utuh)
                 document.body.innerHTML = `
-                    <div style="text-align: center; margin-top: 50px; font-family: sans-serif; padding: 20px; width: 100%;">
-                        <h2>Akses Lokasi Ditutup</h2>
-                        <p>Mohon maaf, demi privasi keluarga besar, akses menuju peta lokasi pernikahan telah dinonaktifkan karena acara telah selesai.</p>
-                        <p>Terima kasih atas pengertiannya.</p>
+                    <div style="text-align: center; font-family: 'Montserrat', sans-serif; padding: 40px 20px; max-width: 450px; margin: auto; background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid #e2e8f0;">
+                        <h2 style="font-size: 1.5rem; color: #e53e3e; font-weight: 500; margin-bottom: 12px;">Akses Lokasi Ditutup</h2>
+                        <p style="color: #718096; line-height: 1.6; font-size: 0.9rem; margin: 0 0 20px 0;">Mohon maaf, demi privasi keluarga besar, akses menuju peta lokasi pernikahan telah dinonaktifkan karena rangkaian acara telah selesai dilaksanakan.</p>
+                        <p style="color: #a0aec0; font-size: 0.8rem; margin: 0;">Terima kasih atas pengertian Anda.</p>
                     </div>
                 `;
             } else {
-                // Tampilkan gambar dengan efek kain selama 3 detik
+                // Gambar intro tayang selama 3.5 detik
                 setTimeout(function() {
                     const intro = document.getElementById('intro');
-                    if (intro) {
-                        // Jalankan efek menghilang (fade out) selama 1.5 detik
-                        intro.classList.add('intro-hidden');
-                    }
+                    const mainContent = document.getElementById('mainContent');
+                    
+                    if (intro) intro.classList.add('intro-hidden');
+                    if (mainContent) mainContent.classList.add('visible');
 
-                    // Pindah ke Google  tepat setelah efek menghilang selesai
+                    // Diberi waktu jeda 3 detik agar keanggunan teks terbaca utuh
                     setTimeout(function() {
-                        // --- PASTE LINK GOOGLE MAPS RUMAH ANDA DI BAWAH INI ---
-                        window.location.href = "https://www.google.com/maps/place/6%C2%B016'47.3%22S+107%C2%B003'17.1%22E/@-6.2799391,107.0543412,20.03z/data=!4m4!3m3!8m2!3d-6.279792!4d107.054743?entry=ttu&g_ep=EgoyMDI2MDgzMC4wIKXMDSoASAFQAw%3D%3D";
-                    }, 1500);
+                        window.location.href = urlMaps;
+                    }, 3000);
 
-                }, 3000); 
+                }, 3500); 
             }
         };
     </script>
 </head>
 <body>
 
-    <!-- Layar Intro Gambar Pengantin dengan Efek Bayangan Kain Berkibar -->
+    <!-- Layar Intro (Gambar Pengantin) -->
     <div id="intro" class="intro-container">
-        <div class="image-wrapper">
-            <img src="pengantin.jpg" alt="Foto Pengantin">
+        <div class="wedding-card">
+            <div class="image-wrapper">
+                <img src="pengantin.jpg" alt="Undangan Pernikahan Yusup & Umi">
+            </div>
         </div>
     </div>
 
-    <!-- Halaman utama yang berada di latar belakang -->
-    <div class="loading-text">
-        <h3>Memuat Peta Lokasi...</h3>
-        <p>Anda akan segera dialihkan ke Google Maps.</p>
+    <!-- Halaman Transisi Seni Tipografi Mewah -->
+    <div id="mainContent" class="main-content">
+        <div class="loading-spinner"></div>
+        <h2 class="phrase-main">Menuju Lokasi Resepsi</h2>
+        <span class="phrase-highlight">Pernikahan Suci</span>
+        <div class="luxury-divider"></div>
+        <p class="phrase-names">Umi & Yusup </p>
     </div>
 
 </body>
